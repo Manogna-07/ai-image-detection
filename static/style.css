@@ -1,0 +1,1037 @@
+
+/* =========================================
+   1. GLOBAL DESIGN
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+:root {
+    --primary: #365eea;
+    --primary-dark: #2549c7;
+    --teal: #168b83;
+    --dark: #192238;
+    --text: #26344d;
+    --muted: #718096;
+    --background: #f5f8ff;
+    --white: #ffffff;
+    --border: #e3eaf5;
+    --green: #25a45a;
+    --red: #dc4949;
+    --shadow: 0 15px 45px rgba(31, 55, 100, 0.08);
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--white);
+    color: var(--dark);
+    line-height: 1.65;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+img {
+    max-width: 100%;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+
+/* =========================================
+   2. NAVIGATION
+========================================= */
+
+.navbar {
+    width: 100%;
+    min-height: 72px;
+    padding: 12px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid #edf0f6;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: 850;
+    color: var(--primary);
+    letter-spacing: -1px;
+}
+
+.logo span {
+    color: var(--teal);
+}
+
+.navbar nav {
+    display: flex;
+    align-items: center;
+    gap: 34px;
+}
+
+.navbar nav a {
+    font-size: 15px;
+    font-weight: 600;
+    color: #64748b;
+    transition: color 0.25s ease;
+}
+
+.navbar nav a:hover {
+    color: var(--primary);
+}
+
+.nav-button {
+    display: inline-block;
+    padding: 12px 23px;
+    background: var(--primary);
+    color: white;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    transition: 0.25s ease;
+}
+
+.nav-button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+
+/* =========================================
+   3. HERO SECTION
+========================================= */
+
+.hero {
+    min-height: 650px;
+    padding: 85px 9%;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: center;
+    gap: 55px;
+    background: linear-gradient(
+        115deg,
+        #edf2ff 0%,
+        #eff8fc 52%,
+        #edfbf7 100%
+    );
+    overflow: hidden;
+}
+
+.hero-content {
+    max-width: 700px;
+}
+
+.eyebrow {
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 850;
+    letter-spacing: 2.4px;
+    margin-bottom: 18px;
+}
+
+.hero h1 {
+    font-size: clamp(40px, 5vw, 62px);
+    line-height: 1.13;
+    letter-spacing: -2px;
+    font-weight: 850;
+    color: #172137;
+    margin-bottom: 25px;
+}
+
+.hero h1 span {
+    display: block;
+}
+
+.hero-description {
+    max-width: 600px;
+    font-size: 18px;
+    line-height: 1.8;
+    color: #667891;
+    margin-bottom: 30px;
+}
+
+.primary-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    background: var(--primary);
+    color: white;
+    padding: 15px 27px;
+    border-radius: 11px;
+    font-size: 15px;
+    font-weight: 750;
+    transition: 0.25s ease;
+}
+
+.primary-button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(54, 94, 234, 0.2);
+}
+
+.primary-button:disabled {
+    opacity: 0.7;
+    cursor: wait;
+    transform: none;
+}
+
+.hero-points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    margin-top: 34px;
+    color: #247e79;
+    font-size: 14px;
+    font-weight: 650;
+}
+
+
+/* =========================================
+   4. HERO ILLUSTRATION
+========================================= */
+
+.hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ai-image-container {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    padding: 15px;
+    margin: auto;
+}
+
+.ai-illustration {
+    position: relative;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    filter: drop-shadow(
+        0 20px 25px rgba(37, 99, 235, 0.12)
+    );
+    animation: floatImage 5s ease-in-out infinite;
+}
+
+.ai-image-glow {
+    position: absolute;
+    width: 75%;
+    height: 75%;
+    top: 12%;
+    left: 12%;
+    background: #60a5fa;
+    filter: blur(90px);
+    opacity: 0.22;
+}
+
+.floating-label {
+    position: absolute;
+    z-index: 3;
+    right: 0;
+    bottom: 25px;
+    padding: 15px 22px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 35px rgba(15, 23, 42, 0.12);
+    font-size: 16px;
+    font-weight: 750;
+    color: var(--dark);
+}
+
+.status-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #16a34a;
+    border-radius: 50%;
+    margin-right: 9px;
+}
+
+@keyframes floatImage {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+
+/* =========================================
+   5. COMMON SECTIONS
+========================================= */
+
+.section {
+    padding: 90px 9%;
+}
+
+.section-heading {
+    max-width: 720px;
+    text-align: center;
+    margin: 0 auto 48px;
+}
+
+.section-heading h2 {
+    color: var(--dark);
+    font-size: 37px;
+    line-height: 1.3;
+    margin-bottom: 14px;
+    letter-spacing: -0.7px;
+}
+
+.section-heading > p:not(.eyebrow) {
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+
+/* =========================================
+   6. IMAGE UPLOAD
+========================================= */
+
+.detector-section {
+    background: white;
+}
+
+.upload-box {
+    max-width: 790px;
+    min-height: 310px;
+    margin: 0 auto;
+    padding: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #f8faff;
+    border: 2px dashed #9bb4f1;
+    border-radius: 21px;
+    transition: 0.3s ease;
+}
+
+.upload-box:hover {
+    border-color: var(--primary);
+    background: #f3f6ff;
+}
+
+.upload-box.drag-active {
+    border-color: var(--primary);
+    background: #eaf0ff;
+    transform: scale(1.01);
+}
+
+.upload-icon {
+    width: 70px;
+    height: 70px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: #e4ecff;
+    color: var(--primary);
+    font-size: 38px;
+    font-weight: 500;
+}
+
+.upload-box h3 {
+    color: var(--dark);
+    font-size: 22px;
+    margin-bottom: 7px;
+}
+
+.upload-box p {
+    color: var(--muted);
+}
+
+.browse-button {
+    padding: 12px 24px;
+    margin: 15px 0;
+    border: 1px solid var(--primary);
+    border-radius: 9px;
+    background: white;
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: 750;
+    transition: 0.25s ease;
+}
+
+.browse-button:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.file-note {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+.preview-container {
+    width: 100%;
+}
+
+.preview-container img {
+    display: block;
+    max-width: 100%;
+    max-height: 270px;
+    margin: 0 auto 15px;
+    object-fit: contain;
+    border-radius: 12px;
+}
+
+.preview-container #fileName {
+    font-weight: 750;
+    color: var(--dark);
+    overflow-wrap: anywhere;
+}
+
+.remove-button {
+    margin-top: 14px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    background: #fee2e2;
+    color: #b91c1c;
+    font-weight: 700;
+}
+
+.remove-button:hover {
+    background: #fecaca;
+}
+
+.detect-button {
+    display: flex;
+    width: fit-content;
+    min-width: 200px;
+    margin: 27px auto 0;
+}
+
+.error-message {
+    max-width: 790px;
+    margin: 0 auto 20px;
+    padding: 15px 20px;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    background: #fef2f2;
+    color: #b91c1c;
+    font-size: 15px;
+}
+
+
+/* =========================================
+   7. DETECTION RESULT
+========================================= */
+
+.result-section {
+    max-width: 1120px;
+    margin: 85px auto 0;
+}
+
+.result-card {
+    max-width: 850px;
+    margin: 0 auto 40px;
+    padding: 42px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+}
+
+.result-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.result-label {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 850;
+    letter-spacing: 2px;
+}
+
+.result-top h2 {
+    margin-top: 8px;
+    font-size: 48px;
+    line-height: 1.2;
+}
+
+.real-text {
+    color: var(--green);
+}
+
+.fake-text {
+    color: var(--red);
+}
+
+.result-status {
+    width: 76px;
+    height: 76px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #eaf0ff;
+    color: var(--primary);
+    font-size: 35px;
+}
+
+.result-description {
+    margin: 17px 0 35px;
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+.confidence-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 24px 0 10px;
+    color: var(--text);
+    font-size: 17px;
+    font-weight: 650;
+}
+
+.confidence-heading strong {
+    font-size: 19px;
+    color: var(--dark);
+}
+
+.progress-track {
+    width: 100%;
+    height: 15px;
+    overflow: hidden;
+    border-radius: 30px;
+    background: #e9eef5;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0;
+    border-radius: 30px;
+    transition: width 1s ease;
+}
+
+.real-fill {
+    background: linear-gradient(
+        90deg,
+        #279b50,
+        #68d68c
+    );
+}
+
+.fake-fill {
+    background: linear-gradient(
+        90deg,
+        #e34c4c,
+        #ed8585
+    );
+}
+
+.threshold-note {
+    margin-top: 25px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+
+/* =========================================
+   8. IMAGE AND GRAD-CAM VISUALIZATION
+========================================= */
+
+.visualization-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+    margin-top: 35px;
+}
+
+.visualization-card {
+    min-width: 0;
+    padding: 28px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 19px;
+    box-shadow: var(--shadow);
+}
+
+.visualization-card h3 {
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: var(--dark);
+}
+
+.visualization-card img {
+    display: block;
+    width: 100%;
+    height: 310px;
+    object-fit: contain;
+    border-radius: 12px;
+    background: #f2f5fa;
+}
+
+.visual-caption {
+    margin-top: 17px;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+
+/* =========================================
+   9. GRAD-CAM EXPLANATION
+========================================= */
+
+.gradcam-explanation {
+    max-width: 1050px;
+    margin: 55px auto 20px;
+    padding: 48px;
+    background: linear-gradient(
+        135deg,
+        #f3f7ff,
+        #f0fbf9
+    );
+    border: 1px solid #e0e8f5;
+    border-radius: 23px;
+}
+
+.gradcam-explanation h2 {
+    color: var(--dark);
+    font-size: 36px;
+    line-height: 1.3;
+    margin-bottom: 20px;
+}
+
+.gradcam-intro {
+    color: #53647c;
+    font-size: 19px;
+    line-height: 1.9;
+    margin-bottom: 35px;
+}
+
+.gradcam-points {
+    display: grid;
+    gap: 28px;
+}
+
+.gradcam-point {
+    display: flex;
+    align-items: flex-start;
+    gap: 22px;
+}
+
+.gradcam-number {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: #e0eaff;
+    color: var(--primary);
+    font-size: 18px;
+    font-weight: 850;
+}
+
+.gradcam-point h3 {
+    color: var(--dark);
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.gradcam-point p {
+    color: #64748b;
+    font-size: 18px;
+    line-height: 1.8;
+}
+
+.gradcam-note {
+    margin-top: 35px;
+    padding: 20px 23px;
+    border-radius: 13px;
+    background: #e8f0ff;
+    color: #334155;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+
+/* =========================================
+   10. PDF REPORT
+========================================= */
+
+.report-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+    margin-top: 35px;
+    padding: 28px 32px;
+    background: #eef3ff;
+    border: 1px solid #d6e2ff;
+    border-radius: 17px;
+}
+
+.report-card h3 {
+    color: var(--dark);
+    font-size: 21px;
+    margin-bottom: 7px;
+}
+
+.report-card p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+
+/* =========================================
+   11. HOW IT WORKS
+========================================= */
+
+.how-section {
+    background: #f6f8fd;
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.step-card {
+    padding: 30px 25px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: white;
+    transition: 0.3s ease;
+}
+
+.step-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow);
+}
+
+.step-card span {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: var(--primary);
+    font-size: 25px;
+    font-weight: 850;
+}
+
+.step-card h3 {
+    margin-bottom: 12px;
+    color: var(--dark);
+    font-size: 20px;
+}
+
+.step-card p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+
+/* =========================================
+   12. ABOUT
+========================================= */
+
+.about-section {
+    background: linear-gradient(
+        120deg,
+        #edf2ff,
+        #effbf8
+    );
+}
+
+.about-details {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.about-details div {
+    padding: 25px 18px;
+    text-align: center;
+    background: white;
+    border: 1px solid #edf0f6;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+}
+
+.about-details h3 {
+    margin-bottom: 9px;
+    color: var(--primary);
+    font-size: 16px;
+}
+
+.about-details p {
+    color: var(--muted);
+    font-size: 15px;
+}
+
+.disclaimer {
+    max-width: 850px;
+    margin: 38px auto 0;
+    color: #64748b;
+    font-size: 15px;
+    line-height: 1.8;
+    text-align: center;
+}
+
+
+/* =========================================
+   13. FOOTER
+========================================= */
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 30px 9%;
+    background: #172137;
+    color: white;
+    font-size: 14px;
+}
+
+.footer p:last-child {
+    color: #aab8ce;
+}
+
+
+/* =========================================
+   14. RESPONSIVE DESIGN
+========================================= */
+
+@media (max-width: 1050px) {
+
+    .hero {
+        padding: 75px 6%;
+        gap: 25px;
+    }
+
+    .steps-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .about-details {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (max-width: 750px) {
+
+    .navbar {
+        padding: 13px 5%;
+        flex-wrap: wrap;
+        gap: 13px;
+    }
+
+    .navbar nav {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .navbar nav a {
+        font-size: 13px;
+    }
+
+    .logo {
+        font-size: 24px;
+    }
+
+    .nav-button {
+        padding: 10px 14px;
+        font-size: 12px;
+    }
+
+    .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 65px 7%;
+    }
+
+    .hero-content {
+        margin: auto;
+    }
+
+    .hero h1 {
+        font-size: 43px;
+    }
+
+    .hero-description {
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 16px;
+    }
+
+    .hero-points {
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .hero-visual {
+        margin-top: 20px;
+    }
+
+    .ai-image-container {
+        max-width: 390px;
+    }
+
+    .section {
+        padding: 65px 6%;
+    }
+
+    .section-heading h2 {
+        font-size: 29px;
+    }
+
+    .visualization-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .visualization-card img {
+        height: 280px;
+    }
+
+    .gradcam-explanation {
+        padding: 28px;
+    }
+
+    .gradcam-explanation h2 {
+        font-size: 29px;
+    }
+
+    .gradcam-intro {
+        font-size: 17px;
+    }
+
+    .gradcam-point h3 {
+        font-size: 19px;
+    }
+
+    .gradcam-point p {
+        font-size: 16px;
+    }
+
+    .report-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .hero-points {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .section-heading h2 {
+        font-size: 26px;
+    }
+
+    .upload-box {
+        min-height: 280px;
+        padding: 22px;
+    }
+
+    .upload-box h3 {
+        font-size: 18px;
+    }
+
+    .result-card {
+        padding: 24px;
+    }
+
+    .result-top h2 {
+        font-size: 36px;
+    }
+
+    .result-status {
+        width: 55px;
+        height: 55px;
+        font-size: 26px;
+    }
+
+    .confidence-heading {
+        font-size: 14px;
+    }
+
+    .confidence-heading strong {
+        font-size: 16px;
+    }
+
+    .gradcam-explanation {
+        padding: 22px;
+    }
+
+    .gradcam-explanation h2 {
+        font-size: 25px;
+    }
+
+    .gradcam-point {
+        gap: 14px;
+    }
+
+    .gradcam-number {
+        width: 42px;
+        height: 42px;
+        font-size: 15px;
+    }
+
+    .gradcam-point h3 {
+        font-size: 17px;
+    }
+
+    .gradcam-point p {
+        font-size: 15px;
+    }
+
+    .steps-grid,
+    .about-details {
+        grid-template-columns: 1fr;
+    }
+
+    .footer {
+        flex-direction: column;
+        text-align: center;
+    }
+
+}

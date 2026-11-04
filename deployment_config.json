@@ -1,0 +1,10 @@
+{
+  "image_height": 224,
+  "image_width": 224,
+  "labels": {
+    "0": "REAL",
+    "1": "FAKE"
+  },
+  "fake_probability_threshold": 0.4299999999999998,
+  "model_name": "EfficientNetB0 AI Image Detector"
+}

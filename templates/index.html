@@ -1,0 +1,855 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AIDetect | AI Image Detection</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+<header class="navbar">
+    <a href="#home" class="logo">AI<span>Detect</span></a>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#detector">Detect Image</a>
+        <a href="#about">About</a>
+    </nav>
+
+    <a href="#detector" class="nav-button">Try Detector</a>
+</header>
+
+
+<main>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+
+            <p class="eyebrow">
+                DEEP LEARNING POWERED DETECTION
+            </p>
+
+            <h1>
+                Detect AI-Generated
+                <span>Images with Confidence</span>
+            </h1>
+
+            <p class="hero-description">
+                Analyze images using a deep learning model based on
+                EfficientNetB0 and identify whether an image is REAL
+                or FAKE.
+            </p>
+
+            <a href="#detector" class="primary-button">
+                Start Detection
+            </a>
+
+            <div class="hero-points">
+                <span>✓ Deep Learning</span>
+                <span>✓ Image Analysis</span>
+                <span>✓ Grad-CAM Visualization</span>
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT SIDE ILLUSTRATION -->
+        <div class="hero-visual">
+
+            <div class="ai-image-container">
+
+                <div class="ai-image-glow"></div>
+
+                <svg viewBox="0 0 480 380"
+                     xmlns="http://www.w3.org/2000/svg"
+                     class="ai-illustration">
+
+                    <defs>
+                        <linearGradient id="aiGradient"
+                                        x1="0" y1="0"
+                                        x2="1" y2="1">
+
+                            <stop offset="0%" stop-color="#4169e1"/>
+                            <stop offset="100%" stop-color="#14b8a6"/>
+
+                        </linearGradient>
+                    </defs>
+
+                    <rect x="55" y="35"
+                          width="370" height="300"
+                          rx="25" fill="#ffffff"/>
+
+                    <rect x="85" y="65"
+                          width="310" height="220"
+                          rx="17" fill="#edf3ff"/>
+
+                    <circle cx="240" cy="160"
+                            r="65"
+                            fill="url(#aiGradient)"
+                            opacity="0.13"/>
+
+                    <path d="M240 95
+                             C210 95 190 119 190 145
+                             C160 155 164 198 192 207
+                             C192 237 221 250 240 230
+                             C259 250 288 237 288 207
+                             C316 198 320 155 290 145
+                             C290 119 270 95 240 95Z"
+                          fill="url(#aiGradient)"/>
+
+                    <path d="M240 110 L240 220
+                             M205 145 L275 185
+                             M275 145 L205 185"
+                          stroke="white"
+                          stroke-width="5"
+                          stroke-linecap="round"
+                          fill="none"/>
+
+                    <circle cx="190" cy="145" r="7" fill="white"/>
+                    <circle cx="290" cy="145" r="7" fill="white"/>
+                    <circle cx="240" cy="220" r="7" fill="white"/>
+
+                    <rect x="115" y="305"
+                          width="115" height="9"
+                          rx="5" fill="#4169e1"
+                          opacity="0.8"/>
+
+                    <rect x="245" y="305"
+                          width="95" height="9"
+                          rx="5" fill="#14b8a6"
+                          opacity="0.8"/>
+
+                    <circle cx="365" cy="65"
+                            r="19" fill="#dcfce7"/>
+
+                    <path d="M357 65 L363 71 L374 58"
+                          stroke="#16a34a"
+                          stroke-width="4"
+                          fill="none"
+                          stroke-linecap="round"/>
+
+                </svg>
+
+                <div class="floating-label">
+                    <span class="status-dot"></span>
+                    AI Image Analysis
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- IMAGE DETECTOR -->
+    <section class="section detector-section" id="detector">
+
+        <div class="section-heading">
+
+            <p class="eyebrow">IMAGE AUTHENTICITY CHECK</p>
+
+            <h2>Analyze Your Image</h2>
+
+            <p>
+                Upload an image to check whether it is real
+                or AI-generated.
+            </p>
+
+        </div>
+
+
+        {% if error %}
+        <div class="error-message">
+            {{ error }}
+        </div>
+        {% endif %}
+
+
+        <form method="POST"
+              action="/"
+              enctype="multipart/form-data"
+              id="uploadForm">
+
+            <div class="upload-box" id="dropArea">
+
+                <input type="file"
+                       name="image"
+                       id="imageInput"
+                       accept=".jpg,.jpeg,.png,.webp"
+                       hidden
+                       required>
+
+                <div id="uploadContent">
+
+                    <div class="upload-icon">↑</div>
+
+                    <h3>Drag and drop your image here</h3>
+
+                    <p>or browse your device</p>
+
+                    <button type="button"
+                            class="browse-button"
+                            id="browseButton">
+
+                        Choose Image
+
+                    </button>
+
+                    <p class="file-note">
+                        JPG, JPEG, PNG and WEBP formats · Maximum 10 MB
+                    </p>
+
+                </div>
+
+
+                <div id="previewContainer"
+                     class="preview-container"
+                     hidden>
+
+                    <img id="imagePreview"
+                         src=""
+                         alt="Selected image preview">
+
+                    <p id="fileName"></p>
+
+                    <p id="fileSize" class="file-note"></p>
+
+                    <button type="button"
+                            id="removeImage"
+                            class="remove-button">
+
+                        Remove Image
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <button type="submit"
+                    class="primary-button detect-button">
+
+                Analyze Image
+
+            </button>
+
+        </form>
+
+
+        <!-- DETECTION RESULTS -->
+        {% if result %}
+
+        <div class="result-section">
+
+            <div class="section-heading">
+
+                <p class="eyebrow">ANALYSIS COMPLETE</p>
+
+                <h2>Detection Results</h2>
+
+                <p>
+                    The deep learning model has completed
+                    the image analysis.
+                </p>
+
+            </div>
+
+
+            <div class="result-card">
+
+                <div class="result-top">
+
+                    <div>
+
+                        <p class="result-label">MODEL PREDICTION</p>
+
+                        <h2 class="{% if result.prediction == 'FAKE' %}fake-text{% else %}real-text{% endif %}">
+                            {{ result.prediction }}
+                        </h2>
+
+                    </div>
+
+                    <div class="result-status">
+                        {% if result.prediction == 'FAKE' %}
+                            ⚠
+                        {% else %}
+                            ✓
+                        {% endif %}
+                    </div>
+
+                </div>
+
+
+                <p class="result-description">
+
+                    {% if result.prediction == 'FAKE' %}
+
+                        The model classified this image as AI-generated.
+
+                    {% else %}
+
+                        The model classified this image as REAL.
+
+                    {% endif %}
+
+                </p>
+
+
+                <div class="confidence-heading">
+
+                    <span>REAL Probability</span>
+
+                    <strong>
+                        {{ result.real_probability|round(2) }}%
+                    </strong>
+
+                </div>
+
+                <div class="progress-track">
+
+                    <div class="progress-fill real-fill"
+                         data-width="{{ result.real_probability }}">
+
+                    </div>
+
+                </div>
+
+
+                <div class="confidence-heading">
+
+                    <span>FAKE Probability</span>
+
+                    <strong>
+                        {{ result.fake_probability|round(2) }}%
+                    </strong>
+
+                </div>
+
+                <div class="progress-track">
+
+                    <div class="progress-fill fake-fill"
+                         data-width="{{ result.fake_probability }}">
+
+                    </div>
+
+                </div>
+
+
+                <p class="threshold-note">
+                    Classification threshold:
+                    {{ result.threshold }}% FAKE probability
+                </p>
+
+            </div>
+
+
+            <!-- IMAGE AND GRAD-CAM -->
+            <div class="visualization-grid">
+
+                <div class="visualization-card">
+
+                    <h3>Original Uploaded Image</h3>
+
+                    <img src="{{ image_url }}"
+                         alt="Original uploaded image">
+
+                    <p class="visual-caption">
+                        The original image submitted for analysis.
+                    </p>
+
+                </div>
+
+
+                <div class="visualization-card">
+
+                    <h3>Grad-CAM Visualization</h3>
+
+                    {% if heatmap_url %}
+
+                    <img src="{{ heatmap_url }}"
+                         alt="Grad-CAM heatmap overlay">
+
+                    <p class="visual-caption">
+                        Highlighted regions show where the model
+                        focused while making its prediction.
+                    </p>
+
+                    {% else %}
+
+                    <p class="visual-caption">
+                        Grad-CAM visualization could not be generated
+                        for this image.
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- GRAD-CAM EXPLANATION -->
+            <div class="gradcam-explanation">
+
+                <p class="eyebrow">
+                    UNDERSTANDING THE PREDICTION
+                </p>
+
+                <h2>How Grad-CAM Explains the Result</h2>
+
+                <p class="gradcam-intro">
+
+                    Grad-CAM (Gradient-weighted Class Activation Mapping)
+                    is a visualization technique that helps explain which
+                    regions of an image influenced the deep learning
+                    model's prediction.
+
+                </p>
+
+
+                <div class="gradcam-points">
+
+
+                    <div class="gradcam-point">
+
+                        <span class="gradcam-number">01</span>
+
+                        <div>
+
+                            <h3>Identifies Important Regions</h3>
+
+                            <p>
+
+                                Grad-CAM highlights image regions that
+                                contribute strongly to the model's
+                                classification.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="gradcam-point">
+
+                        <span class="gradcam-number">02</span>
+
+                        <div>
+
+                            <h3>Generates a Heatmap</h3>
+
+                            <p>
+
+                                The heatmap uses colors to represent
+                                the relative importance of different
+                                image regions for the selected prediction.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="gradcam-point">
+
+                        <span class="gradcam-number">03</span>
+
+                        <div>
+
+                            <h3>Improves Interpretability</h3>
+
+                            <p>
+
+                                The visualization provides insight into
+                                where the model is focusing, making
+                                its prediction easier to examine.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <p class="gradcam-note">
+
+                    <strong>Note:</strong>
+                    Grad-CAM highlights influential regions.
+                    It does not independently prove that an image
+                    is real or AI-generated.
+
+                </p>
+
+            </div>
+
+
+            <!-- PDF DOWNLOAD -->
+            {% if report_url %}
+
+            <div class="report-card">
+
+                <div>
+
+                    <h3>Your Analysis Report is Ready</h3>
+
+                    <p>
+                        Download your prediction and Grad-CAM
+                        visualization as a PDF report.
+                    </p>
+
+                </div>
+
+                <a href="{{ report_url }}"
+                   class="primary-button">
+
+                    Download PDF Report
+
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- HOW IT WORKS -->
+    <section class="section how-section" id="how-it-works">
+
+        <div class="section-heading">
+
+            <p class="eyebrow">OUR PROCESS</p>
+
+            <h2>How It Works</h2>
+
+            <p>
+                The system follows four steps to analyze an image.
+            </p>
+
+        </div>
+
+
+        <div class="steps-grid">
+
+
+            <div class="step-card">
+
+                <span>01</span>
+
+                <h3>Upload Image</h3>
+
+                <p>
+                    Select an image from your device
+                    or drag it into the upload area.
+                </p>
+
+            </div>
+
+
+            <div class="step-card">
+
+                <span>02</span>
+
+                <h3>Preprocessing</h3>
+
+                <p>
+                    The image is converted to RGB and
+                    resized to 224 × 224 pixels.
+                </p>
+
+            </div>
+
+
+            <div class="step-card">
+
+                <span>03</span>
+
+                <h3>Deep Learning Analysis</h3>
+
+                <p>
+                    EfficientNetB0 analyzes the image
+                    and calculates its prediction probability.
+                </p>
+
+            </div>
+
+
+            <div class="step-card">
+
+                <span>04</span>
+
+                <h3>View Results</h3>
+
+                <p>
+                    View the prediction, probabilities,
+                    Grad-CAM visualization and PDF report.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- ABOUT -->
+    <section class="section about-section" id="about">
+
+        <div class="section-heading">
+
+            <p class="eyebrow">ABOUT THE PROJECT</p>
+
+            <h2>AI-Generated Image Detection</h2>
+
+            <p>
+
+                This project uses a trained EfficientNetB0 deep learning
+                model to classify uploaded images as REAL or FAKE.
+                Grad-CAM is used to visualize image regions that
+                contribute to the model's prediction.
+
+            </p>
+
+        </div>
+
+
+        <div class="about-details">
+
+            <div>
+                <h3>Deep Learning Model</h3>
+                <p>EfficientNetB0</p>
+            </div>
+
+            <div>
+                <h3>Input Image Size</h3>
+                <p>224 × 224 pixels</p>
+            </div>
+
+            <div>
+                <h3>Classification</h3>
+                <p>REAL and FAKE</p>
+            </div>
+
+            <div>
+                <h3>FAKE Threshold</h3>
+                <p>0.43</p>
+            </div>
+
+        </div>
+
+
+        <p class="disclaimer">
+
+            <strong>Disclaimer:</strong>
+            This system provides an automated prediction based on
+            learned patterns. Its output should not be treated as
+            absolute proof that an image is real or AI-generated.
+
+        </p>
+
+    </section>
+
+</main>
+
+
+<!-- FOOTER -->
+<footer class="footer">
+
+    <p>AIDetect | AI-Generated Image Detection</p>
+
+    <p>Powered by EfficientNetB0</p>
+
+</footer>
+
+
+<!-- JAVASCRIPT -->
+<script>
+
+    const imageInput = document.getElementById("imageInput");
+
+    const dropArea = document.getElementById("dropArea");
+
+    const browseButton = document.getElementById("browseButton");
+
+    const previewContainer =
+        document.getElementById("previewContainer");
+
+    const uploadContent =
+        document.getElementById("uploadContent");
+
+    const imagePreview =
+        document.getElementById("imagePreview");
+
+    const fileName =
+        document.getElementById("fileName");
+
+    const fileSize =
+        document.getElementById("fileSize");
+
+    const removeImage =
+        document.getElementById("removeImage");
+
+
+    browseButton.addEventListener("click", function () {
+
+        imageInput.click();
+
+    });
+
+
+    imageInput.addEventListener("change", function () {
+
+        if (imageInput.files.length > 0) {
+
+            showPreview(imageInput.files[0]);
+
+        }
+
+    });
+
+
+    function showPreview(file) {
+
+        const allowedTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ];
+
+        if (!allowedTypes.includes(file.type)) {
+
+            alert("Please select a JPG, PNG or WEBP image.");
+
+            imageInput.value = "";
+
+            return;
+
+        }
+
+        if (file.size > 10 * 1024 * 1024) {
+
+            alert("Please select an image smaller than 10 MB.");
+
+            imageInput.value = "";
+
+            return;
+
+        }
+
+        imagePreview.src = URL.createObjectURL(file);
+
+        fileName.textContent = file.name;
+
+        fileSize.textContent =
+            (file.size / (1024 * 1024)).toFixed(2) + " MB";
+
+        uploadContent.hidden = true;
+
+        previewContainer.hidden = false;
+
+    }
+
+
+    dropArea.addEventListener("dragover", function (event) {
+
+        event.preventDefault();
+
+        dropArea.classList.add("drag-active");
+
+    });
+
+
+    dropArea.addEventListener("dragleave", function () {
+
+        dropArea.classList.remove("drag-active");
+
+    });
+
+
+    dropArea.addEventListener("drop", function (event) {
+
+        event.preventDefault();
+
+        dropArea.classList.remove("drag-active");
+
+        const files = event.dataTransfer.files;
+
+        if (files.length > 0) {
+
+            imageInput.files = files;
+
+            showPreview(files[0]);
+
+        }
+
+    });
+
+
+    removeImage.addEventListener("click", function () {
+
+        imageInput.value = "";
+
+        imagePreview.src = "";
+
+        previewContainer.hidden = true;
+
+        uploadContent.hidden = false;
+
+    });
+
+
+    // Display probability bars.
+    document.querySelectorAll(".progress-fill").forEach(function (bar) {
+
+        const width = Number(bar.dataset.width);
+
+        bar.style.width =
+            Math.max(0, Math.min(100, width)) + "%";
+
+    });
+
+
+    // Scroll to the results after submitting an image.
+    const uploadForm = document.getElementById("uploadForm");
+
+    if (uploadForm) {
+
+        uploadForm.addEventListener("submit", function () {
+
+            const button = uploadForm.querySelector(
+                'button[type="submit"]'
+            );
+
+            button.textContent = "Analyzing Image...";
+
+            button.disabled = true;
+
+        });
+
+    }
+
+</script>
+
+</body>
+</html>

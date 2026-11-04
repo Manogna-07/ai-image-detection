@@ -6,3 +6,4 @@ reportlab
 matplotlib
 scikit-learn
 streamlit
+gunicorn
